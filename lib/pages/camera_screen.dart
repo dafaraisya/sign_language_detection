@@ -40,13 +40,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff3A0CA3),
-      appBar: AppBar(
         backgroundColor: Color(0xff3A0CA3),
-        elevation: 0.0,
-      ),
-      body: cameraPreview() 
-    );
+        appBar: AppBar(
+          backgroundColor: Color(0xff3A0CA3),
+          elevation: 0.0,
+        ),
+        body: cameraPreview());
   }
 
   Widget cameraPreview() {
@@ -57,7 +56,10 @@ class _CameraScreenState extends State<CameraScreen> {
           children: [
             Text(
               'loading',
-              style: TextStyle(color: Colors.white, fontSize: 25.0, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25.0,
+                  fontWeight: FontWeight.w500),
             )
           ],
         ),

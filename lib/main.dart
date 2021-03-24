@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sign_language_detection/pages/camera_screen.dart';
 import 'package:sign_language_detection/pages/info.dart';
 

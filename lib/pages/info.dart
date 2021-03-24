@@ -28,12 +28,12 @@ class Info extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             Container(
-              padding: EdgeInsets.only(left: 35.0, right: 35.0, top: 20.0),
+              padding: EdgeInsets.only(left: 15.0, right: 15.0, top: 25.0),
               child: Text(
                 'Bahasa Isyarat Cam adalah aplikasi berbasis android dan OpenCV untu mendeteksi bahasa isyarat yang ditangkap oleh kamera. Aplikasi ini akan mendeteksi huruf alfabet sesuai gerakan tangan yang tertangkap. Aplikasi ini adalah besutan Dimas Nazli dan Dafa Raisya, salah kedua calon asisten Lab B201 Telematic Teknik Komputer ITS.',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 24.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.w300),
                 textAlign: TextAlign.justify,
               ),
