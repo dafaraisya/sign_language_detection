@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+//import 'package:flutter/services.dart';
 import 'package:sign_language_detection/pages/camera_screen.dart';
 import 'package:sign_language_detection/pages/info.dart';
+import 'package:sign_language_detection/screensize_config.dart';
 
 void main() {
   runApp(MyApp());
@@ -34,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
       backgroundColor: Color(0xff3A0CA3),
       appBar: AppBar(

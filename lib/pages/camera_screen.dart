@@ -58,7 +58,7 @@ class _CameraScreenState extends State<CameraScreen> {
               'loading',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: 25.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.w500),
             )
           ],
