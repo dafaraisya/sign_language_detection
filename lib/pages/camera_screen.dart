@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:tflite/tflite.dart';
 
 class CameraScreen extends StatefulWidget {
   @override
@@ -7,21 +8,38 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
+  bool isWorking = false;
   CameraController controller;
   List<CameraDescription> cameras;
+  CameraImage imgCamera;
+  String result = '';
+
+  loadModel() async {
+    await Tflite.loadModel(
+        model: "assets/model_unquant.tflite", labels: "assets/labels.txt");
+  }
 
   @override
   void initState() {
+    loadModel();
     super.initState();
     availableCameras().then((value) {
       cameras = value;
       if (cameras.length > 0) {
-        controller = CameraController(cameras[0], ResolutionPreset.high);
+        controller = CameraController(cameras[1], ResolutionPreset.high);
         controller.initialize().then((_) {
           if (!mounted) {
             return;
           }
-          setState(() {});
+          setState(() {
+            controller.startImageStream((imageFromStream) {
+              if (!isWorking) {
+                isWorking = true;
+                imgCamera = imageFromStream;
+                runModelOnStreamFrames();
+              }
+            });
+          });
         });
       } else {
         print('camera error');
@@ -29,6 +47,39 @@ class _CameraScreenState extends State<CameraScreen> {
     }).catchError((e) {
       print(e.code);
     });
+  }
+
+  runModelOnStreamFrames() async {
+    if (imgCamera != null) {
+      var recognitions = await Tflite.runModelOnFrame(
+          bytesList: imgCamera.planes.map((plane) {
+            return plane.bytes;
+          }).toList(),
+          imageHeight: imgCamera.height,
+          imageWidth: imgCamera.width,
+          imageMean: 127.5,
+          imageStd: 127.5,
+          numResults: 1,
+          threshold: 0.6,
+          asynch: true);
+
+      result = " ";
+
+      recognitions.forEach((response) {
+        result += response["label"] +
+            " " +
+            ((response["confidence"] as double) * 100).toStringAsFixed(1) +
+            " % \n\n";
+      });
+
+      if (mounted) {
+        setState(() {
+          return result;
+        });
+      }
+
+      isWorking = false;
+    }
   }
 
   @override
@@ -40,6 +91,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xff3A0CA3),
         appBar: AppBar(
           backgroundColor: Color(0xff3A0CA3),
@@ -57,92 +109,27 @@ class _CameraScreenState extends State<CameraScreen> {
             Text(
               'loading',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.w500),
+                color: Colors.white,
+                fontSize: 25.0,
+                fontWeight: FontWeight.w500),
             )
           ],
         ),
       );
     }
-    return RotationTransition(
-      turns: AlwaysStoppedAnimation(90 / 360),
-      child: CameraPreview(controller),
+    return Stack(
+      children: [
+        CameraPreview(controller),
+        Center(
+          child: Text(
+            "Huruf yang terdeteksi adalah" + result,
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 }
-
-// class CameraScreen extends StatefulWidget {
-//   @override
-//   _CameraScreenState createState() => _CameraScreenState();
-// }
-
-// class _CameraScreenState extends State<CameraScreen> {
-//   CameraController cameraController;
-//   List cameras;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     availableCameras().then((value) {
-//       cameras = value;
-//       if (cameras.length > 0) {
-//         initCamera(cameras[0]).then((_) {});
-//       } else {
-//         print('camera not found');
-//       }
-//     }).catchError((e) {
-//       print(e.code);
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     super.dispose();
-//   }
-
-//   Future initCamera(CameraDescription cameraDescription) async {
-//     if (cameraController != null) {
-//       await cameraController.dispose();
-//     }
-//     cameraController =
-//         CameraController(cameraDescription, ResolutionPreset.high);
-
-//     cameraController.addListener(() {
-//       if (mounted) {
-//         setState(() {});
-//       }
-//     });
-
-//     if (cameraController.value.hasError) {
-//       print('camera error');
-//     }
-
-//     try {
-//       await cameraController.initialize();
-//     } catch (e) {
-//       print('Camera error $e');
-//     }
-
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.white,
-//       body: Container(
-//         child: cameraPreview(),
-//       )
-//     );
-//   }
-
-//   Widget cameraPreview() {
-//     if (cameraController == null || !cameraController.value.isInitialized) {
-//       return Text('loading', style: TextStyle(color: Colors.black),);
-//     }
-//     return RotationTransition(
-//       turns: AlwaysStoppedAnimation(90 / 360),
-//       child: CameraPreview(cameraController),
-//     );
-//   }
-// }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/services.dart';
 import 'package:sign_language_detection/pages/camera_screen.dart';
 import 'package:sign_language_detection/pages/info.dart';
 import 'package:sign_language_detection/screensize_config.dart';
@@ -63,13 +62,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(padding: EdgeInsets.only(top: 80.0)),
             IconButton(
-                icon: Image.asset('assets/images/camera_icon.png'),
-                iconSize: 150.0,
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return CameraScreen();
-                  }));
-                })
+              icon: Image.asset('assets/images/camera_icon.png'),
+              iconSize: 150.0,
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return CameraScreen();
+                }));
+              })
           ],
         ),
       ),
