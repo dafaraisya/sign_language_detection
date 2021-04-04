@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sign_language_detection/pages/camera_screen.dart';
 import 'package:sign_language_detection/pages/info.dart';
+import 'package:sign_language_detection/pages/pick_file.dart';
 import 'package:sign_language_detection/screensize_config.dart';
 
 void main() {
@@ -55,12 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            Padding(padding: EdgeInsets.only(top: 120.0)),
+            Padding(padding: EdgeInsets.only(top: 50.0)),
             Text(
               'Sign Language Cam',
               style: TextStyle(fontSize: 30.0, color: Colors.white),
             ),
-            Padding(padding: EdgeInsets.only(top: 80.0)),
+            Padding(padding: EdgeInsets.only(top: 40.0)),
             IconButton(
               icon: Image.asset('assets/images/camera_icon.png'),
               iconSize: 150.0,
@@ -68,7 +69,27 @@ class _MyHomePageState extends State<MyHomePage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return CameraScreen();
                 }));
-              })
+              },
+            ),
+            Text('Use Camera Device', style: TextStyle(color: Colors.white, fontSize: 15.0),),
+            Padding(padding: EdgeInsets.only(bottom: 20.0)),
+            MaterialButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return PickFile();
+                }));
+              },
+              color: Color(0xff677FF1),
+              textColor: Colors.white,
+              child: Icon(
+                Icons.photo_outlined,
+                size: 90,
+              ),
+              padding: EdgeInsets.all(16),
+              shape: CircleBorder(),
+            ),
+            Padding(padding: EdgeInsets.only(top: 15.0)),
+            Text('Use Image File', style: TextStyle(color: Colors.white, fontSize: 15.0),),
           ],
         ),
       ),

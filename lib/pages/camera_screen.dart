@@ -16,7 +16,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   loadModel() async {
     await Tflite.loadModel(
-        model: "assets/model_unquant.tflite", labels: "assets/labels.txt");
+        model: "assets/model_unquant_v2.tflite", 
+        labels: "assets/labels.txt");
   }
 
   @override

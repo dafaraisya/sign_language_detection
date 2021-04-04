@@ -30,6 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   camera: ^0.6.0
   tflite: ^1.1.1
+  image_picker: ^0.6.7+7
+  meta: ^1.1.8
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +52,8 @@ flutter:
   assets:
     - assets/labels.txt
     - assets/model_unquant.tflite
+    - assets/model_unquant_v2.tflite
+    - assets/images/camera_icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
