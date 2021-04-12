@@ -15,6 +15,7 @@ class _PickFileState extends State<PickFile> {
   List result;
   String confidence;
   String name;
+  String sentence = " ";
 
   getImageFromGallery() async {
     var tempStore = await ImagePicker().getImage(source: ImageSource.gallery);
@@ -42,6 +43,7 @@ class _PickFileState extends State<PickFile> {
         result = res;
 
         name = result[0]["label"];
+        sentence = sentence + name.toString();
         confidence = result != null 
           ? (result[0]['confidence']*100.0).toString().substring(0, 2) + "%"
           : "";
@@ -80,18 +82,21 @@ class _PickFileState extends State<PickFile> {
               height: 30,
             ),
             isImageLoaded
-                ? Center(
-                    child: Container(
-                      height: 350,
-                      width: 350,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: FileImage(File(pickedImage.path)),
-                              fit: BoxFit.contain)),
-                    ),
-                  )
-                : Container(),
-            Text("Name : $name \n Confidence : $confidence")
+              ? Center(
+                  child: Container(
+                    height: 350,
+                    width: 350,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: FileImage(File(pickedImage.path)),
+                            fit: BoxFit.contain)),
+                  ),
+                )
+              : Container(),
+            Text("Name : $name \nConfidence : $confidence"),
+            Padding(padding: EdgeInsets.only(top: 70.0)),
+            Text("Kata yang terbentuk : \n ", style: TextStyle(fontSize: 20.0),),
+            Text("$sentence", style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),)
           ],
         ),
       ),
